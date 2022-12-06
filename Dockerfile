@@ -5,7 +5,7 @@ RUN apt-get install -y nano
 COPY requirements.txt /opt/
 RUN pip3 install -r /opt/requirements.txt
 
-WORKDIR /simple_api
+WORKDIR /opt
 #COPY . .
 
 ENV FLASK_APP=app

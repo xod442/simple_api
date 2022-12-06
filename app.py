@@ -49,7 +49,7 @@ config = {
 # mongodump --uri="mongodb://{}:{}@{}".format(config["username"], config["password"], config["server"])
 connector = "mongodb://{}:{}@{}".format(config["username"], config["password"], config["server"])
 client = pymongo.MongoClient(connector)
-db = client["demo"]
+db = client["demo2"]
 
 
 
@@ -61,8 +61,10 @@ Login Section
 
 @app.route("/", methods=('GET', 'POST'))
 def login():
-    message = "Welcome to this simple API"
-    return render_template('home.html', message=message)
+
+
+        message = "Welcome to this simple API"
+        return render_template('home.html', message=message)
 
 
 '''
@@ -74,8 +76,19 @@ Home
 @app.route("/home", methods=('GET', 'POST'))
 def home():
 
+    my_customers = []
+    cust = db.customer.find({})
+    customer = loads(dumps(cust))
+    for c in customer:
+        number = c['number']
+        name = c['name']
+        phone = c['phone']
+        email = c['email']
+
+        info = [number, name, phone, email]
+        my_customers.append(info)
     message = "Operation completed successfully"
-    return render_template('home.html', message=message)
+    return render_template('home1.html', message=message, my_customers=my_customers)
 
 
 

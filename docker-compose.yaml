@@ -14,8 +14,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: siesta3
     volumes:
-      - mongo-data:/data/db
-      - mongo-configdb:/data/configdb
+      - mongo-data:/data2/db
+      - mongo-configdb:/data2/configdb
 
 
 volumes:
