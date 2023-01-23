@@ -7,22 +7,22 @@
         <div class="container">
             <div class="row mt-50">
                 <div class="col-md-8 col-md-offset-2">
-                    <h2 class="text-center heading-separator" style="color:white">Add Contact</h2>
-                    <form method="POST" action="{{ url_for('.add_customer')}}">
+                    <h2 class="text-center heading-separator" style="color:white">Add Group</h2>
+                    <form method="POST" action="{{ url_for('.add_group')}}">
                         <div class="row">
                           <div>
                             <p style="color:red">  {{ message }}  </p>
                           </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                  <label for="list_company" style="color:white">Name:</label>
-                                  <input type="text" placeholder="Do Not Use Quotes" class="form-control" id="name" name="name">
+                                  <label for="group_name" style="color:white">Group Name:</label>
+                                  <input type="text" placeholder="Do Not Use Quotes" class="form-control" id="group_name" name="group_name">
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                  <label for="list_company" style="color:white">Phone:</label>
-                                  <input type="tel" placeholder="123-456-7890" class="form-control" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                                  <label for="description" style="color:white">Desctiption:</label>
+                                  <input type="tel" placeholder="Enter a description" class="form-control" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
                                 </div>
                             </div>
                             <div class="col-sm-12">

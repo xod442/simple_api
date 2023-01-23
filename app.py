@@ -1,11 +1,4 @@
 '''
- _______  ___   __   __  _______  ___      _______    _______  _______  ___
-|       ||   | |  |_|  ||       ||   |    |       |  |   _   ||       ||   |
-|  _____||   | |       ||    _  ||   |    |    ___|  |  |_|  ||    _  ||   |
-| |_____ |   | |       ||   |_| ||   |    |   |___   |       ||   |_| ||   |
-|_____  ||   | |       ||    ___||   |___ |    ___|  |       ||    ___||   |
- _____| ||   | | ||_|| ||   |    |       ||   |___   |   _   ||   |    |   |
-|_______||___| |_|   |_||___|    |_______||_______|  |__| |__||___|    |___|
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,24 +27,23 @@ import os
 from jinja2 import Environment, FileSystemLoader
 from bson.json_util import dumps
 from bson.json_util import loads
+from utility.client import get_client
 #
 app = Flask(__name__)
 
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-APP_STATIC = os.path.join(APP_ROOT, 'static')
-APP_TEMPLATE = os.path.join(APP_ROOT, 'templates')
-
+# A dictionary of the mongo database credentials
 config = {
     "username": "admin",
     "password": "siesta3",
     "server": "mongo",
 }
-# mongodump --uri="mongodb://{}:{}@{}".format(config["username"], config["password"], config["server"])
+
+# Setup database connetor
 connector = "mongodb://{}:{}@{}".format(config["username"], config["password"], config["server"])
 client = pymongo.MongoClient(connector)
+
+#set mongo database
 db = client["demo2"]
-
-
 
 '''
 #-------------------------------------------------------------------------------
@@ -76,19 +68,17 @@ Home
 @app.route("/home", methods=('GET', 'POST'))
 def home():
 
-    my_customers = []
-    cust = db.customer.find({})
-    customer = loads(dumps(cust))
-    for c in customer:
-        number = c['number']
-        name = c['name']
-        phone = c['phone']
-        email = c['email']
+    my_central = []
+    info = db.central.find({})
+    docs = loads(dumps(info))
+    for d in docs:
+        group_name = d['group_name']
+        description = d['description']
 
-        info = [number, name, phone, email]
-        my_customers.append(info)
+        info2 = [number, group_name, description]
+        my_central.append(info2)
     message = "Operation completed successfully"
-    return render_template('home1.html', message=message, my_customers=my_customers)
+    return render_template('home1.html', message=message, my_central=my_central)
 
 
 
@@ -98,45 +88,45 @@ Contact Section
 #-------------------------------------------------------------------------------
 '''
 
-@app.route("/add_customer", methods=('GET', 'POST'))
-def add_customer():
+@app.route("/add_group", methods=('GET', 'POST'))
+def add_group():
     if request.method == 'POST':
-        highest_record = db.customer.find({}).sort("number", pymongo.DESCENDING).limit(1)
-        customer = loads(dumps(highest_record))
-        if customer == []:
+        highest_record = db.central.find({}).sort("number", pymongo.DESCENDING).limit(1)
+        highest = loads(dumps(highest_record))
+        if high == []:
             number = 1
         else:
             number = customer[0]["number"] + 1
 
         entry = {
-            "name": request.form['name'].replace('"', ""),
-            "phone": request.form['phone'].replace('"', ""),
-            "email": request.form['email'].replace('"', ""),
+            "group_name": request.form['group_name'],
+            "description": request.form['description'],
             "number": number,
         }
         # TODO: check to see if record exists
-        response = db.customer.insert_one(entry)
+        response = db.central.insert_one(entry)
         # TODO check to see record was written to database)
-        message = 'Customer information written to database'
+        message = 'Group information written to database'
         return redirect(url_for('home', message=message))
 
-    return render_template('add_customer.html')
+    return render_template('add_group.html')
 
-@app.route("/list_customer", methods=('GET', 'POST'))
-def list_customer():
-    my_customers = []
-    cust = db.customer.find({})
-    customer = loads(dumps(cust))
-    for c in customer:
-        number = c['number']
-        name = c['name']
-        phone = c['phone']
-        email = c['email']
+@app.route("/get_groups", methods=('GET', 'POST'))
+def get_groups():
+    
+    central = get_client()
 
-        info = [number, name, phone, email]
-        my_customers.append(info)
+    my_central = []
+
+    all_groups = Groups()
+
+    response = all_groups.get_groups(conn=central)
+
+    groups = (response['msg']['data'])
+
+
     # Check user credentials
-    return render_template('list_customer.html', my_customers=my_customers)
+    return render_template('get_groups.html', groups=groups)
 
 @app.route("/edit_customer", methods=('GET', 'POST'))
 def edit_customer():
