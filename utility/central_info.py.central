@@ -1,9 +1,0 @@
-central_info = {
-           "username": "workbench_apiuser2@aruba-workbench.com",
-           "password": "Iq0u4^;?h@",
-           "client_id": "hEOgnKR0zEhdpbrLSI5w3bVdqQipHfEN",
-           "client_secret": "CJO5Vs760icXnjecSRk0hBfvEkuGC7dv",
-           "customer_id": "c6906d529b7f417d8f18f60660795f72",
-           "base_url": "https://apigw-uswest4.central.arubanetworks.com",
-           "refresh_token": "lvSIbq0eG3IxOUX70q7O1xZALsoB04d3"
-       }
